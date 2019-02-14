@@ -21,8 +21,6 @@
  * @author     Underbits <alvaro@underbits.com.br>
  */
 
-use InstagramScraper\Instagram;
-
 class Undergram_Public {
 
 	/**
@@ -134,7 +132,11 @@ class Undergram_Public {
 					<div class="follow-box">
 						<div class="content">
 							<img src="%2$s" class="avatar" alt="%3$s">
-							<p class="name">@%3$s</p>
+							<p class="name">
+								<svg viewBox="0 0 56 18">
+									<text x="0" y="15">@%3$s</text>
+								</svg>							
+							</p>
 							<p class="follow">Seguir</p>
 						</div>
 					</div>

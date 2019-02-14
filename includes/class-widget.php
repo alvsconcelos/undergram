@@ -1,6 +1,8 @@
 <?php 
 
-class undergram extends WP_Widget {
+use InstagramScraper\Instagram;
+
+class Undergram_Widget extends WP_Widget {
 
 /**
  * Sets up the widgets name etc
@@ -23,11 +25,53 @@ public function __construct() {
  */
 public function widget( $args, $instance ) {
     // outputs the content of the widget
+    // echo $args['before_widget'];
+    // if ( ! empty( $instance['title'] ) ) {
+    //     echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ). $args['after_title'];
+    // }
+    // echo __( 'Hello, World!', 'text_domain' );
+    // echo $args['after_widget'];
+
     echo $args['before_widget'];
-    if ( ! empty( $instance['title'] ) ) {
-        echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ). $args['after_title'];
+
+    $user = 'youngthegiant';
+    $instagram = new Instagram();
+    $account = $instagram->getAccount($user);
+    $avatar = $account->getProfilePicUrl();
+    $medias = $instagram->getMedias($user, 3);
+    $photos = "";
+
+    foreach ($medias as $index => $media) {
+        $url = $media->getLink();
+        $img = $media->getsquareImages()[0];
+        $photo = sprintf('
+            <div class="col">
+                <a href="%s">
+                    <div class="pt-100" style="background:url(%s);"></div>
+                </a>
+            </div>
+        ', $url, $img);
+        if(($index + 1)%2 == 0) $photo .= '</div><div class="row no-gutters">';
+        $photos .= $photo;
     }
-    echo __( 'Hello, World!', 'text_domain' );
+    printf('
+    <div class="instagram-gallery">
+        <div class="row no-gutters">
+            %1$s
+            <div class="col d-flex justify-content-center align-items-center" style="background: #E6E2CC;">
+                <a class="full-link" href="https://instagram.com/%3$s"></a>
+                <div class="follow-box">
+                    <div class="content">
+                        <img src="%2$s" class="avatar" alt="%3$s">
+                        <p class="name">@%3$s</p>
+                        <p class="follow">Seguir</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    ', $photos, $avatar, $user);    
+
     echo $args['after_widget'];
 }
 
@@ -64,4 +108,9 @@ public function update( $new_instance, $old_instance ) {
 
     return $updated_instance;
 }
+
+public function register() {
+    register_widget( 'undergram_widget' );
+}
+
 }

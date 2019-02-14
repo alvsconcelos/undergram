@@ -64,7 +64,7 @@ register_deactivation_hook( __FILE__, 'deactivate_undergram' );
  * admin-specific hooks, and public-facing site hooks.
  */
 
-require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+// require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-undergram.php';
 
 /**

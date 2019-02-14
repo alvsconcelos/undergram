@@ -106,6 +106,16 @@ class Undergram {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-undergram-loader.php';
 
 		/**
+		 * The class responsible to get Instagram data.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+
+		/**
+		 * It creates a Wordpress Widget
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-widget.php';
+
+		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
@@ -169,10 +179,12 @@ class Undergram {
 	private function define_public_hooks() {
 
 		$plugin_public = new Undergram_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_widget = new Undergram_Widget();
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		add_shortcode('display_todays_date', array($plugin_public, 'photos'));
+		$this->loader->add_action( 'widgets_init', $plugin_widget, 'register' );
+		// add_shortcode('display_todays_date', array($plugin_public, 'photos'));
 
 	}
 
