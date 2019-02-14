@@ -20,6 +20,9 @@
  * @subpackage Undergram/public
  * @author     Underbits <alvaro@underbits.com.br>
  */
+
+use InstagramScraper\Instagram;
+
 class Undergram_Public {
 
 	/**
@@ -73,7 +76,7 @@ class Undergram_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/undergram-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/undergram.css', array(), $this->version, 'all' );
 
 	}
 
@@ -98,6 +101,51 @@ class Undergram_Public {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/undergram-public.js', array( 'jquery' ), $this->version, false );
 
+	}
+
+	public function photos()
+	{
+		$user = 'youngthegiant';
+		$instagram = new Instagram();
+		$account = $instagram->getAccount($user);
+		$avatar = $account->getProfilePicUrl();
+		$medias = $instagram->getMedias($user, 3);
+		$photos = "";
+
+		foreach ($medias as $index => $media) {
+			$url = $media->getLink();
+			$img = $media->getsquareImages()[0];
+			$photo = sprintf('
+				<div class="col">
+					<a href="%s">
+						<div class="pt-100" style="background:url(%s);"></div>
+					</a>
+				</div>
+			', $url, $img);
+			if(($index + 1)%2 == 0) $photo .= '</div><div class="row no-gutters">';
+			$photos .= $photo;
+		}
+		printf('
+		<div class="instagram-gallery">
+			<div class="row no-gutters">
+				%1$s
+				<div class="col d-flex justify-content-center align-items-center" style="background: #E6E2CC;">
+					<a class="full-link" href="https://instagram.com/%3$s"></a>
+					<div class="follow-box">
+						<div class="content">
+							<img src="%2$s" class="avatar" alt="%3$s">
+							<p class="name">@%3$s</p>
+							<p class="follow">Seguir</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		', $photos, $avatar, $user);
+	}
+	// 
+	public function register_shortcode() {
+		add_shortcode('display_todays_date', 'photos');
 	}
 
 }

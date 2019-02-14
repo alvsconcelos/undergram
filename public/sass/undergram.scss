@@ -1,0 +1,84 @@
+$follow-color: #3897F0;
+
+.instagram-gallery {
+    * {
+        transition: ease 0.2s all;
+        backface-visibility: hidden;
+    }
+     
+    >.row {
+        &:first-child {
+            margin-bottom: 10px;
+        }
+
+        >.col {
+            &:first-child {
+                margin-right: 10px;
+            }
+        }
+
+        .pt-100 {
+            padding-top: 100%;
+            background-size: 100% !important;
+            box-shadow: 0;
+            &:hover {
+                box-shadow: 0 0 200px rgba(0,0,0,0.9) inset;
+            }
+        }
+
+        .follow-box {
+            .content {
+                text-align: center;
+                .avatar {
+                    display: block;
+                    border-radius: 50%;
+                    margin: auto auto 10px;
+                    width: 50%;
+                }
+                p {
+                    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+                    font-weight: 600;
+                    text-indent: 0;
+                    text-align: center;
+                    margin-bottom: 0;
+
+                    &.name {
+                        margin-bottom: 10px;
+                        color: rgba(0, 0, 0, 0.8);                        
+                    }
+
+                    &.follow {
+                        display: inline-block;
+                        background: $follow-color;
+                        border-radius: 5px;
+                        padding: 8px 18px;
+                        line-height: 1;
+                        font-size: .8rem;
+                        color: white;
+                    }
+
+                }                
+            }
+        }
+
+        .full-link {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+
+            &:hover {
+                + .follow-box {
+                    .content {
+                        $size-to-scale: 1.1;
+                        transform: scale3d($size-to-scale, $size-to-scale, $size-to-scale);
+                        .follow {
+                            background:darken($follow-color, 10);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}

@@ -37,6 +37,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'PLUGIN_NAME_VERSION', '1.0.0' );
 
+
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-undergram-activator.php
@@ -62,6 +63,8 @@ register_deactivation_hook( __FILE__, 'deactivate_undergram' );
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
+
+require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-undergram.php';
 
 /**
