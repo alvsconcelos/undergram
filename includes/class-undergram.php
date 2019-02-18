@@ -183,6 +183,9 @@ class Undergram {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_ajax_nopriv_undergram', $plugin_public, 'get_instagram_data' );
+		$this->loader->add_action( 'wp_ajax_undergram', $plugin_public, 'get_instagram_data' );
+		// add_action('wp_ajax_test_response', 'text_ajax_process_request');			
 		$this->loader->add_action( 'widgets_init', $plugin_widget, 'register' );
 		// add_shortcode('display_todays_date', array($plugin_public, 'photos'));
 

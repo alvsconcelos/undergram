@@ -1,11 +1,13 @@
 var gulp = require('gulp');
 var plumber = require('gulp-plumber');
 var sass = require('gulp-sass');
-var watch = require('gulp-watch');
+var terser = require('gulp-terser');
 
 var paths = {
     "css": "./public/css",
-    "sass": "./public/sass"
+    "sass": "./public/sass",
+    "js_src": "./public/js_src",
+    "js": "./public/js",
 };
 
 gulp.task('sass', function () {
@@ -23,8 +25,15 @@ gulp.task('sass', function () {
     return stream;
 });
 
+gulp.task('scripts', function () {
+    var stream = gulp.src(paths.js_src + '/*.js')
+        .pipe(terser())
+        .pipe(gulp.dest(paths.js))
+    return stream;
+});
+
 
 gulp.task('watch', function () {
     gulp.watch( paths.sass + '/*.scss', gulp.series('sass') );
-    // gulp.watch( [paths.dev + '/js/**/*.js', 'js/**/*.js', '!js/theme.js', '!js/theme.min.js'], ['scripts'] );
+    gulp.watch( paths.js_src + '/*.js', gulp.series('scripts') );
 });

@@ -1,5 +1,7 @@
 <?php
 
+use InstagramScraper\Instagram;
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -97,7 +99,15 @@ class Undergram_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/undergram-public.js', array( 'jquery' ), $this->version, false );
+		// wp_enqueue_script( 'instafeed', 'https://cdn.boomcdn.com/libs/instafeed-js/1.4.1/instafeed.min.js', array( 'jquery' ), $this->version, false );
+		// wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/undergram-public.js', array( 'jquery' ), $this->version, false );
+		wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/undergram.js', '', $this->version, true );
+		wp_localize_script($this->plugin_name, 'instagram_data', 
+			array(
+				'ajax_url' => admin_url('admin-ajax.php'),
+				'nonce' => wp_create_nonce("undergram")
+		));      		
+		wp_enqueue_script( $this->plugin_name );
 
 	}
 
@@ -149,5 +159,80 @@ class Undergram_Public {
 	public function register_shortcode() {
 		add_shortcode('display_todays_date', 'photos');
 	}
+
+	public function get_instagram_data() {
+		check_ajax_referer( 'undergram' );
+
+		$user = $_POST['user'];
+		$posts_number = $_POST['posts_number'];
+		
+		$instagram = new Instagram();
+		$account = $instagram->getAccount($user);
+		$avatar = $account->getProfilePicUrl();
+		$medias = $instagram->getMedias($user, $posts_number);
+		// $photos = [];
+
+		// foreach ($medias as $index => $media) {
+		// 	$photo['url'] = $media->getLink();
+		// 	$photo['img'] = $media->getsquareImages()[0];
+		// 	array_push($photos, $photo);
+		// }
+
+		// $response = [
+		// 	'avatar' => $avatar,
+		// 	'user_url' => 'https://instagram.com/'.$user,
+		// 	'photos' => $photos
+		// ];
+
+		foreach ($medias as $index => $media) {
+			$url = $media->getLink();
+			$img = $media->getsquareImages()[0];
+			$photo = sprintf('
+				<div class="col">
+					<a href="%s">
+						<div class="pt-100" style="background:url(%s);"></div>
+					</a>
+				</div>
+			', $url, $img);
+			if(($index + 1)%2 == 0) $photo .= '</div><div class="row no-gutters">';
+			$photos .= $photo;
+		}
+		$html = sprintf('
+		<div class="instagram-gallery">
+			<div class="row no-gutters">
+				%1$s
+				<div class="col d-flex justify-content-center align-items-center" style="background: #E6E2CC;">
+					<a class="full-link" href="https://instagram.com/%3$s"></a>
+					<div class="follow-box">
+						<div class="content">
+							<img src="%2$s" class="avatar" alt="%3$s">
+							<p class="name">@%3$s</p>
+							<p class="follow">Seguir</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		', $photos, $avatar, $user);  
+		
+		$response = [
+			'html' => $html
+		];
+		
+		wp_send_json_success($response);
+
+	}
+
+	// public function text_ajax_process_requesta() {
+	// 	// first check if data is being sent and that it is the data we want
+	// 	  if ( isset( $_POST["post_var"] ) ) {
+	// 		// now set our response var equal to that of the POST var (this will need to be sanitized based on what you're doing with with it)
+	// 		$response = $_POST["post_var"];
+	// 		// send the response back to the front end
+	// 		echo json_encode(array('eai' => 'asdfasdf'));
+	// 		die();
+	// 	}
+	// }
+	
 
 }
