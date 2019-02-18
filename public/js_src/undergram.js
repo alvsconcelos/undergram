@@ -23,3 +23,7 @@ function build_undergram_blocks() {
     }
 
 }
+
+document.addEventListener('DOMContentLoaded', function(){ 
+    build_undergram_blocks();
+}, false);
