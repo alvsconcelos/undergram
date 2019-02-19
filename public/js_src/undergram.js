@@ -17,6 +17,8 @@ function get_instagram_data(user, posts_number, element = "") {
 function build_undergram_blocks() {
     // var currentBlock;
     blocks = document.getElementsByClassName("undergram-box");
+    if(blocks.length < 1) return false;
+
     for (var i = 0, len = blocks.length; i < len; i++) {
         currentBlock = blocks[i].childNodes[0];
         get_instagram_data(currentBlock.dataset.user, currentBlock.dataset.postsnumber, currentBlock.id);
