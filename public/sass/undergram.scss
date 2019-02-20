@@ -4,6 +4,8 @@ $follow-color: #3897F0;
     * {
         transition: ease 0.2s all;
         backface-visibility: hidden;
+        -webkit-backface-visibility: hidden; 
+                
     }
      
     >.row {
@@ -20,9 +22,10 @@ $follow-color: #3897F0;
         .pt-100 {
             padding-top: 100%;
             background-size: 100% !important;
+            background-position: center !important;
             box-shadow: 0;
             &:hover {
-                box-shadow: 0 0 200px rgba(0,0,0,0.9) inset;
+                background-size: 120% !important;
             }
         }
 
@@ -73,7 +76,7 @@ $follow-color: #3897F0;
                 + .follow-box {
                     .content {
                         $size-to-scale: 1.1;
-                        transform: scale3d($size-to-scale, $size-to-scale, $size-to-scale);
+                        transform: scale($size-to-scale);
                         .follow {
                             background:darken($follow-color, 10);
                         }

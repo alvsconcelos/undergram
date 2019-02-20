@@ -186,7 +186,7 @@ class Undergram_Public {
 
 		foreach ($medias as $index => $media) {
 			$url = $media->getLink();
-			$img = $media->getsquareImages()[0];
+			$img = $media->getsquareImages()[2];
 			$photo = sprintf('
 				<div class="col">
 					<a href="%s">
@@ -216,7 +216,7 @@ class Undergram_Public {
 		', $photos, $avatar, $user);  
 		
 		$response = [
-			'html' => $html
+			'html' => $html,
 		];
 		
 		wp_send_json_success($response);

@@ -1,6 +1,7 @@
 .instagram-gallery * {
   transition: ease 0.2s all;
-  backface-visibility: hidden; }
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; }
 
 .instagram-gallery > .row:first-child {
   margin-bottom: 10px; }
@@ -11,9 +12,10 @@
 .instagram-gallery > .row .pt-100 {
   padding-top: 100%;
   background-size: 100% !important;
+  background-position: center !important;
   box-shadow: 0; }
   .instagram-gallery > .row .pt-100:hover {
-    box-shadow: 0 0 200px rgba(0, 0, 0, 0.9) inset; }
+    background-size: 120% !important; }
 
 .instagram-gallery > .row .follow-box .content {
   text-align: center; }
@@ -48,6 +50,6 @@
   height: 100%;
   z-index: 2; }
   .instagram-gallery > .row .full-link:hover + .follow-box .content {
-    transform: scale3d(1.1, 1.1, 1.1); }
+    transform: scale(1.1); }
     .instagram-gallery > .row .full-link:hover + .follow-box .content .follow {
       background: #117ee4; }
