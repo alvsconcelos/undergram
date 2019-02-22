@@ -10,7 +10,7 @@ class Undergram_Widget extends WP_Widget {
 public function __construct() {
     $widget_ops = array(
         'classname' => 'undergram-box',
-        'description' => '',
+        'description' => 'Exibe as últimas fotos de qualquer perfil do Instagram.',
     );
 
     parent::__construct( 'undergram_widget', 'Instagram Box', $widget_ops );
@@ -31,46 +31,7 @@ public function widget( $args, $instance ) {
     
     if ( ! empty( $instance['title'] ) ) {
         echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ). $args['after_title'];
-    }
-    // dd($args);
-
-    // $user = $instance['instagram_user'];
-    // $instagram = new Instagram();
-    // $account = $instagram->getAccount($user);
-    // $avatar = $account->getProfilePicUrl();
-    // $medias = $instagram->getMedias($user, $instance['posts_number']);
-    // $photos = "";
-
-    // foreach ($medias as $index => $media) {
-    //     $url = $media->getLink();
-    //     $img = $media->getsquareImages()[0];
-    //     $photo = sprintf('
-    //         <div class="col">
-    //             <a href="%s">
-    //                 <div class="pt-100" style="background:url(%s);"></div>
-    //             </a>
-    //         </div>
-    //     ', $url, $img);
-    //     if(($index + 1)%2 == 0) $photo .= '</div><div class="row no-gutters">';
-    //     $photos .= $photo;
-    // }
-    // printf('
-    // <div class="instagram-gallery">
-    //     <div class="row no-gutters">
-    //         %1$s
-    //         <div class="col d-flex justify-content-center align-items-center" style="background: #E6E2CC;">
-    //             <a class="full-link" href="https://instagram.com/%3$s"></a>
-    //             <div class="follow-box">
-    //                 <div class="content">
-    //                     <img src="%2$s" class="avatar" alt="%3$s">
-    //                     <p class="name">@%3$s</p>
-    //                     <p class="follow">Seguir</p>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     </div>
-    // </div>
-    // ', $photos, $avatar, $user);    
+    } 
 
     printf('<div class="insta-content" id="content_%s" data-user="%s" data-postsnumber="%s"></div>',
     $args['widget_id'], $instance['instagram_user'], $instance['posts_number']);
